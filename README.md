@@ -1,5 +1,5 @@
 # hapiPy3
-hapi python3 support
+hapi python3 support(currently in progress, any suggestions and comments are welcome)
 
 
 >The HITRAN Application Programming Interface (HAPI) is a set of routines in 
