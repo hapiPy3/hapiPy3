@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HAPI &mdash; HAPI 1.0.00 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.00',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HAPI 1.0.00 documentation" href="#" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hapi">
+<h1>HAPI<a class="headerlink" href="#hapi" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="features-summary">
+<h2>1. FEATURES SUMMARY<a class="headerlink" href="#features-summary" title="Permalink to this headline">¶</a></h2>
+<p>Some of the prominent current features of HAPI are:</p>
+<ul>
+<li><p class="first">Downloading line-by-line data from the HITRANonline site to a local machine.</p>
+</li>
+<li><p class="first">Filtering and processing the data in SQL-like fashion.</p>
+</li>
+<li><p class="first">Conventional Python structures (lists, tuples, and dictionaries) for representing spectroscopic data.</p>
+</li>
+<li><p class="first">Possibility to use a large set of third-party Python libraries to work with the data.</p>
+</li>
+<li><p class="first">Python implementation of the HT profile [1-3] which can be used in spectra simulations. This lineshape can also be reduced to a number of conventional line profiles such as Gaussian (Doppler),Lorentzian, Voigt, Rautian, Speed-dependent Voigt and speed-dependent Rautian.</p>
+</li>
+<li><p class="first">Python implementation of total internal partition sums (TIPS-2011 [4]) which is used in spectrasimulations as well as scaling some HITRAN [5] parameters.</p>
+</li>
+<li><p class="first">High-resolution spectra simulation accounting for pressure, temperature and optical path length.</p>
+</li>
+<li><dl class="first docutils">
+<dt>The following spectral functions can be calculated:</dt>
+<dd><ul class="first last simple">
+<li>absorption coefficient</li>
+<li>absorption spectrum</li>
+<li>transmittance spectrum</li>
+<li>radiance spectrum</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Spectral calculation using a number of instrumental functions to simulate experimental spectra.</p>
+</li>
+<li><p class="first">Possibility to extend the user&#8217;s functionality by adding custom line shapes, partition sums andapparatus functions.</p>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="working-with-data">
+<h2>2. WORKING WITH DATA<a class="headerlink" href="#working-with-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="local-database-structure">
+<h3>LOCAL DATABASE STRUCTURE<a class="headerlink" href="#local-database-structure" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="downloading-and-describing-data">
+<h3>DOWNLOADING AND DESCRIBING DATA<a class="headerlink" href="#downloading-and-describing-data" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul>
+<li><p class="first">To start working with HAPI, the user should import all functions from the module “hapi.py”</p>
+</li>
+<li><p class="first">To get additional information on function fetch, call getHelp.</p>
+</li>
+<li><dl class="first docutils">
+<dt>To download the data, simply call the function &#8220;fetch&#8221;.</dt>
+<dd><ul class="first last simple">
+<li>See getHelp(fetch_by_ids) to get more information on this.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">To get a list of tables which are already in the database, use the tableList() function.</p>
+</li>
+<li><p class="first">To learn about the table we just downloaded, let&#8217;s use a function &#8220;describeTable&#8221;.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="filtering-and-outputting-data">
+<h3>FILTERING AND OUTPUTTING DATA<a class="headerlink" href="#filtering-and-outputting-data" title="Permalink to this headline">¶</a></h3>
+<p>Use the simple select(...) call to output the table content. Full information on control parameters can be obtained via the getHelp(select) statement.</p>
+</div>
+<div class="section" id="filtering-conditions">
+<h3>FILTERING CONDITIONS<a class="headerlink" href="#filtering-conditions" title="Permalink to this headline">¶</a></h3>
+<p>The following operations are available in select (case insensitive):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="31%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DESCRIPTION</th>
+<th class="head">LITERAL</th>
+<th class="head">EXAMPLE</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Range</td>
+<td>&#8216;RANGE&#8217;,&#8217;BETWEEN&#8217;</td>
+<td>(&#8216;BETWEEN&#8217;,&#8217;nu&#8217;,0,1000)</td>
+</tr>
+<tr class="row-odd"><td>Subset</td>
+<td>&#8216;IN&#8217;,&#8217;SUBSET&#8217;</td>
+<td>(&#8216;IN&#8217;,&#8217;local_iso_id&#8217;,[1,2,3,4])</td>
+</tr>
+<tr class="row-even"><td>And</td>
+<td>&#8216;&amp;&#8217;,&#8217;&amp;&amp;&#8217;,&#8217;AND&#8217;</td>
+<td>(&#8216;AND&#8217;,(&#8216;&lt;&#8217;,&#8217;nu&#8217;,1000),(&#8216;&gt;&#8217;,&#8217;nu&#8217;,10))</td>
+</tr>
+<tr class="row-odd"><td>Or</td>
+<td>&#8216;|&#8217;,&#8217;||&#8217;,&#8217;OR&#8217;</td>
+<td>(&#8216;OR&#8217;,(&#8216;&gt;&#8217;,&#8217;nu&#8217;,1000),(&#8216;&lt;&#8217;,&#8217;nu&#8217;,10))</td>
+</tr>
+<tr class="row-even"><td>Not</td>
+<td>&#8216;!&#8217;,&#8217;NOT&#8217;</td>
+<td>(&#8216;NOT&#8217;,(&#8216;IN&#8217;,&#8217;local_iso_id&#8217;,[1,2,3]))</td>
+</tr>
+<tr class="row-odd"><td>Less than</td>
+<td>&#8216;&lt;&#8217;,&#8217;LESS&#8217;,&#8217;LT&#8217;</td>
+<td>(&#8216;&lt;&#8217;,&#8217;nu&#8217;,1000)</td>
+</tr>
+<tr class="row-even"><td>More than</td>
+<td>&#8216;&gt;&#8217;,&#8217;MORE&#8217;,&#8217;MT&#8217;</td>
+<td>(&#8216;&gt;&#8217;,&#8217;sw&#8217;,1.0e-20)</td>
+</tr>
+<tr class="row-odd"><td>Less or equal to</td>
+<td>&#8216;&lt;=&#8217;,&#8217;LESSOREQUAL&#8217;,&#8217;LTE&#8217;</td>
+<td>(&#8216;&lt;=&#8217;,&#8217;local_iso_id&#8217;,10)</td>
+</tr>
+<tr class="row-even"><td>Greater or equal to</td>
+<td>&#8216;&gt;=&#8217;,&#8217;MOREOREQUAL&#8217;,&#8217;MTE&#8217;</td>
+<td>(&#8216;&gt;=&#8217;,&#8217;sw&#8217;,1e-20)</td>
+</tr>
+<tr class="row-odd"><td>Equal</td>
+<td>&#8216;=&#8217;,&#8217;==&#8217;,&#8217;EQ&#8217;,&#8217;EQUAL&#8217;,&#8217;EQ&#8217;</td>
+<td>(&#8216;&lt;=&#8217;,&#8217;local_iso_id&#8217;,10)</td>
+</tr>
+<tr class="row-even"><td>Not equal</td>
+<td>&#8216;!=&#8217;,&#8217;&lt;&gt;&#8217;,&#8217;~=&#8217;,&#8217;NE&#8217;,&#8217;NOTE</td>
+<td>(&#8216;!=&#8217;,&#8217;local_iso_id&#8217;,1)</td>
+</tr>
+<tr class="row-odd"><td>Summation</td>
+<td>&#8216;+&#8217;,&#8217;SUM&#8217;:</td>
+<td>(&#8216;+&#8217;,&#8217;v1&#8217;,&#8217;v2&#8217;,&#8217;v3&#8217;)</td>
+</tr>
+<tr class="row-even"><td>Difference</td>
+<td>&#8216;-&#8216;,&#8217;DIFF&#8217;</td>
+<td>(&#8216;-&#8216;,&#8217;nu&#8217;,&#8217;elow&#8217;)</td>
+</tr>
+<tr class="row-odd"><td>Multiplication</td>
+<td>&#8216;*&#8217;,&#8217;MUL&#8217;</td>
+<td>(&#8216;*&#8217;,&#8217;sw&#8217;,0.98)</td>
+</tr>
+<tr class="row-even"><td>Division</td>
+<td>&#8216;/&#8217;,&#8217;DIV&#8217;</td>
+<td>(&#8216;/&#8217;,&#8217;A&#8217;,2)</td>
+</tr>
+<tr class="row-odd"><td>Cast to string</td>
+<td>&#8216;STR&#8217;,&#8217;STRING&#8217;</td>
+<td>(&#8216;STR&#8217;,&#8217;some_string&#8217;)</td>
+</tr>
+<tr class="row-even"><td>Cast to Python list</td>
+<td>&#8216;LIST&#8217;</td>
+<td>(&#8216;LIST&#8217;,[1,2,3,4,5])</td>
+</tr>
+<tr class="row-odd"><td>Match regexp</td>
+<td>&#8216;MATCH&#8217;,&#8217;LIKE&#8217;</td>
+<td>(&#8216;MATCH&#8217;,(‘STR’,&#8217;w+&#8217;),&#8217;nu&#8217;)</td>
+</tr>
+<tr class="row-even"><td>Search single match</td>
+<td>&#8216;SEARCH&#8217;</td>
+<td>(&#8216;SEARCH&#8217;,(‘STR’,&#8217;d d d&#8217;),&#8217;quanta&#8217;)</td>
+</tr>
+<tr class="row-odd"><td>Search all matches</td>
+<td>&#8216;FINDALL&#8217;</td>
+<td>(&#8216;FINDALL&#8217;,(‘STR’,&#8217;d&#8217;),&#8217;quanta&#8217;)</td>
+</tr>
+<tr class="row-even"><td>Count within group</td>
+<td>&#8216;COUNT&#8217;</td>
+<td>(&#8216;COUNT&#8217;,&#8217;local_iso_id&#8217;)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="accessing-columns-in-a-table">
+<h3>ACCESSING COLUMNS IN A TABLE<a class="headerlink" href="#accessing-columns-in-a-table" title="Permalink to this headline">¶</a></h3>
+<p>For this purpose, there exist two functions:</p>
+<p><code class="docutils literal"><span class="pre">getColumn(...)</span></code>
+<code class="docutils literal"><span class="pre">getColumns(...)</span></code></p>
+<p>The first one returns just one column at a time. The second one returns a list of columns.</p>
+</div>
+<div class="section" id="specifying-a-list-of-parameters">
+<h3>SPECIFYING A LIST OF PARAMETERS<a class="headerlink" href="#specifying-a-list-of-parameters" title="Permalink to this headline">¶</a></h3>
+<p>The select function has a control parameter &#8220;ParameterNames&#8221;, which makes it possible to specify parameters we want to be selected, and perform some simple arithmetic expressions with them.</p>
+</div>
+<div class="section" id="saving-query-to-disk">
+<h3>SAVING QUERY TO DISK<a class="headerlink" href="#saving-query-to-disk" title="Permalink to this headline">¶</a></h3>
+<p>For example, select all lines from H2O and save the result in file &#8216;H2O.txt&#8217;:</p>
+<p><code class="docutils literal"><span class="pre">select('H2O',File='H2O.txt')</span></code></p>
+</div>
+<div class="section" id="getting-information-on-isotopologues">
+<h3>GETTING INFORMATION ON ISOTOPOLOGUES<a class="headerlink" href="#getting-information-on-isotopologues" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Natural abundances</li>
+<li>Molecular masses</li>
+<li>Molecule names</li>
+<li>Isotopologue names</li>
+<li>ISO_ID</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="calculating-spectra">
+<h2>3. CALCULATING SPECTRA<a class="headerlink" href="#calculating-spectra" title="Permalink to this headline">¶</a></h2>
+<p>HAPI provides a powerful tool to calculate cross-sections based on line-byline
+data contained in HITRAN. This features:</p>
+<ul>
+<li><p class="first">Python implementation of the HT (Hartmann-Tran [1-3]) profile which is used in spectra simulations. This line shape can also be reduced to a number of conventional line profiles such as Gaussian (Doppler), Lorentzian, Voigt, Rautian, Speed-dependent Voigt and speed-dependent Rautian.</p>
+</li>
+<li><p class="first">Python implementation of total internal partition sums (TIPS-2011 [4]) which is used in spectra simulations.</p>
+</li>
+<li><dl class="first docutils">
+<dt>High-resolution spectra simulation accounting for pressure, temperature, and optical path length. The following spectral functions can be calculated:</dt>
+<dd><ul class="first last simple">
+<li>absorption coefficient</li>
+<li>absorption spectrum</li>
+<li>transmittance spectrum</li>
+<li>radiance spectrum</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Spectra simulation using a number of apparatus functions.</p>
+</li>
+<li><p class="first">Possibility to extend the user&#8217;s functionality by adding custom line shapes, partition sums, and apparatus functions.</p>
+</li>
+<li><p class="first">An approach to function code is aimed to be flexible enough, yet hopefully intuitive.</p>
+</li>
+</ul>
+<div class="section" id="using-line-profiles">
+<h3>USING LINE PROFILES<a class="headerlink" href="#using-line-profiles" title="Permalink to this headline">¶</a></h3>
+<p>Several line shape (line profile) families are currently available:</p>
+<ul class="simple">
+<li>Gaussian (Doppler) profile</li>
+<li>Lorentzian profile</li>
+<li>Voigt profile</li>
+<li>HT profile (Hartmann-Tran)</li>
+</ul>
+</div>
+<div class="section" id="using-partition-sums">
+<h3>USING PARTITION SUMS<a class="headerlink" href="#using-partition-sums" title="Permalink to this headline">¶</a></h3>
+<p>To calculate a partition sum for most of the isotopologues in HITRAN, we will use a function partitionSum.
+The syntax is as follows:
+partitionSum(M,I,T), where M,I - standard HITRAN molecule-isotopologue notation, T - definition of temperature range.
+<em>use getHelp for detailed info.</em></p>
+</div>
+<div class="section" id="calculating-absorption-coefficients">
+<h3>CALCULATING ABSORPTION COEFFICIENTS<a class="headerlink" href="#calculating-absorption-coefficients" title="Permalink to this headline">¶</a></h3>
+<p>Currently HAPI can calculate the following spectral function at arbitrary thermodynamic parameters:</p>
+<ol class="arabic simple">
+<li>Absorption coefficient</li>
+<li>Absorption spectrum</li>
+<li>Transmittance spectrum</li>
+<li>Radiance spectrum</li>
+</ol>
+<p>All these functions can be calculated with or without accounting of instrument properties (apparatus function, resolution, path length etc...)</p>
+<p>To calculate an absorption coefficient, we can use one of the following functions:</p>
+<ul class="simple">
+<li>absorptionCoefficient_HT</li>
+<li>absorptionCoefficient_Voigt</li>
+<li>absorptionCoefficient_Lorentz</li>
+<li>absorptionCoefficient_Doppler</li>
+</ul>
+<p>Each of these functions calculates cross sections using different line shapes (the names are quite selfexplanatory).
+You can get detailed information on using each of these functions by calling getHelp(function_name).</p>
+<p><strong>HAPI provides a flexible control over a calculation procedure. This control can be achieved by using a number of input parameters. See more in hapi_manual.pdf</strong></p>
+</div>
+<div class="section" id="calculating-absorption-transmittance-and-radiance-spectra">
+<h3>CALCULATING ABSORPTION, TRANSMITTANCE, AND RADIANCE SPECTRA<a class="headerlink" href="#calculating-absorption-transmittance-and-radiance-spectra" title="Permalink to this headline">¶</a></h3>
+<p>In order to be consistent with internal API&#8217;s units, we need to have an absorption coefficient in cm-1:</p>
+<p><code class="docutils literal"><span class="pre">nu,coef</span> <span class="pre">=</span> <span class="pre">absorptionCoefficient_Lorentz(SourceTables='CO2',HITRAN_units=False)</span></code></p>
+<p>To calculate absorption spectrum, use the function absorptionSpectrum():</p>
+<p><code class="docutils literal"><span class="pre">nu,absorp</span> <span class="pre">=</span> <span class="pre">absorptionSpectrum(nu,coef)</span></code></p>
+<p>To calculate transmittance spectrum, use function transmittanceSpectrum():</p>
+<p><code class="docutils literal"><span class="pre">nu,trans</span> <span class="pre">=</span> <span class="pre">transmittanceSpectrum(nu,coef)</span></code></p>
+<p>To calculate radiance spectrum, use function radianceSpectrum():</p>
+<p><code class="docutils literal"><span class="pre">nu,radi</span> <span class="pre">=</span> <span class="pre">radianceSpectrum(nu,coef)</span></code></p>
+<p>The last three commands used a default path length (1 m). To see complete info on all three functions,
+look for the section &#8220;calculating spectra&#8221; in getHelp()</p>
+</div>
+<div class="section" id="applying-instrumental-functions">
+<h3>APPLYING INSTRUMENTAL FUNCTIONS<a class="headerlink" href="#applying-instrumental-functions" title="Permalink to this headline">¶</a></h3>
+<p>The following instrumental functions are available:</p>
+<ol class="arabic simple">
+<li>Rectangular (Boxcar)</li>
+<li>Triangular</li>
+<li>Gaussian</li>
+<li>Dispersion (Lorentz)</li>
+<li>Diffraction</li>
+<li>Michelson</li>
+</ol>
+<p><cite>Details are included in hapi_manual.pdf</cite></p>
+</div>
+<div class="section" id="aliases">
+<h3>ALIASES<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h3>
+<p>To simplify the usage of HAPI, aliases (i.e. shortcuts) are given for the cross section functions:</p>
+<p>abscoef_HT                      =&gt; absorptionCoefficient_HT
+abscoef_Voigt           =&gt; absorptionCoefficient_Voigt
+abscoef_Lorentz         =&gt; absorptionCoefficient_Lorentz
+abscoef_Doppler         =&gt; absorptionCoefficient_Doppler
+abscoef_Gauss           =&gt; absorptionCoefficient_Doppler</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="plotting-with-matplotlib">
+<h2>PLOTTING WITH MATPLOTLIB<a class="headerlink" href="#plotting-with-matplotlib" title="Permalink to this headline">¶</a></h2>
+<p>Make plots using the Matplotlib - Python library for plotting.
+A step-by-step guide can be found in hapi_manual.pdf</p>
+</div>
+<div class="section" id="examples-of-key-functions">
+<h2>EXAMPLES OF KEY FUNCTIONS<a class="headerlink" href="#examples-of-key-functions" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>Help system</dt>
+<dd><ul class="first last simple">
+<li>getHelp()</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Fetching data</dt>
+<dd><ul class="first last simple">
+<li>fetch(TableName, M, I, numin, numax)</li>
+<li>fetch_by_ids(TableName, iso_id_list, numin, numax)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Working with data</dt>
+<dd><ul class="first last simple">
+<li>db_begin(db=None)</li>
+<li>db_commit()</li>
+<li>tableList()</li>
+<li>describeTable(TableName)</li>
+<li>select(TableName, DestinationTableName=&#8217;__BUFFER__&#8217;, ParameterNames=None, Conditions=None, Output=True, File=None)</li>
+<li>sort(TableName, DestinationTableName=None, ParameterNames=None, Accending=True, Output=False, File=None)</li>
+<li>group(TableName, DestinationTableName=&#8217;__BUFFER__&#8217;, ParameterNames=None, GroupParameterNames=None, Output=True)</li>
+<li>extractColumns(TableName, SourceParameterName, ParameterFormats, ParameterNames=None, FixCol=False)</li>
+<li>getColumn(TableName, ParameterName)</li>
+<li>getColumns(TableName, ParameterNames)</li>
+<li>dropTable(TableName)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Calculating spectra</dt>
+<dd><ul class="first last simple">
+<li>PROFILE_HT(sg0, GamD, Gam0, Gam2, Shift0, Shift2, anuVC, eta, sg)</li>
+<li>PROFILE_VOIGT(sg0, GamD, Gam0, sg)</li>
+<li>PROFILE_LORENTZ(sg0, Gam0, sg)</li>
+<li>PROFILE_DOPPLER(sg0, GamD, sg)</li>
+<li>partitionSum(M, I, T, step=None)</li>
+<li>absorptionCoefficient_HT()</li>
+<li>absorptionCoefficient_Voigt()</li>
+<li>absorptionCoefficient_Lorentz()</li>
+<li>absorptionCoefficient_Doppler()</li>
+<li>transmittanceSpectrum()</li>
+<li>absorptionSpectrum()</li>
+<li>radianceSpectrum()</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Convolving spectra</dt>
+<dd><ul class="first last simple">
+<li>RECTANGULAR : SLIT_RECTANGULAR</li>
+<li>TRIANGULAR : SLIT_TRIANGULAR</li>
+<li>GAUSSIAN : SLIT_GAUSSIAN</li>
+<li>DIFFRACTION : SLIT_DIFFRACTION</li>
+<li>MICHELSON : SLIT_MICHELSON</li>
+<li>DISPERSION/LORENTZ : SLIT_DISPERSION</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Information on isotopologues</dt>
+<dd><ul class="first last simple">
+<li>abundance(M, I)</li>
+<li>molecularMass(M, I)</li>
+<li>moleculeName(M)</li>
+<li>isotopologueName(M, I)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Miscellaneous</dt>
+<dd><ul class="first last simple">
+<li>getStickXY(TableName)</li>
+<li>read_xsect(filename)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<hr class="docutils" />
+<p>TO BE CONTINUED</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HAPI</a><ul>
+<li><a class="reference internal" href="#features-summary">1. FEATURES SUMMARY</a></li>
+<li><a class="reference internal" href="#working-with-data">2. WORKING WITH DATA</a><ul>
+<li><a class="reference internal" href="#local-database-structure">LOCAL DATABASE STRUCTURE</a></li>
+<li><a class="reference internal" href="#downloading-and-describing-data">DOWNLOADING AND DESCRIBING DATA</a></li>
+<li><a class="reference internal" href="#filtering-and-outputting-data">FILTERING AND OUTPUTTING DATA</a></li>
+<li><a class="reference internal" href="#filtering-conditions">FILTERING CONDITIONS</a></li>
+<li><a class="reference internal" href="#accessing-columns-in-a-table">ACCESSING COLUMNS IN A TABLE</a></li>
+<li><a class="reference internal" href="#specifying-a-list-of-parameters">SPECIFYING A LIST OF PARAMETERS</a></li>
+<li><a class="reference internal" href="#saving-query-to-disk">SAVING QUERY TO DISK</a></li>
+<li><a class="reference internal" href="#getting-information-on-isotopologues">GETTING INFORMATION ON ISOTOPOLOGUES</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calculating-spectra">3. CALCULATING SPECTRA</a><ul>
+<li><a class="reference internal" href="#using-line-profiles">USING LINE PROFILES</a></li>
+<li><a class="reference internal" href="#using-partition-sums">USING PARTITION SUMS</a></li>
+<li><a class="reference internal" href="#calculating-absorption-coefficients">CALCULATING ABSORPTION COEFFICIENTS</a></li>
+<li><a class="reference internal" href="#calculating-absorption-transmittance-and-radiance-spectra">CALCULATING ABSORPTION, TRANSMITTANCE, AND RADIANCE SPECTRA</a></li>
+<li><a class="reference internal" href="#applying-instrumental-functions">APPLYING INSTRUMENTAL FUNCTIONS</a></li>
+<li><a class="reference internal" href="#aliases">ALIASES</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plotting-with-matplotlib">PLOTTING WITH MATPLOTLIB</a></li>
+<li><a class="reference internal" href="#examples-of-key-functions">EXAMPLES OF KEY FUNCTIONS</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Kasenglee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
