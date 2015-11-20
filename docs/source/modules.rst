@@ -1,9 +1,4 @@
-.. HAPI documentation master file, created by
-   sphinx-quickstart on Mon Nov  9 10:18:03 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-HAPI
+HAPI modules
 ================================
 
 1. FEATURES SUMMARY
