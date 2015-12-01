@@ -28,6 +28,7 @@ Contents:
    copyright
    forwords
    modules
+   functionality
    todo
    changelog
 
