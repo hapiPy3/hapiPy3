@@ -11016,4 +11016,7 @@ def convolveSpectrumFull(Omega,CrossSection,Resolution=0.1,AF_wing=10.,SlitFunct
 # Test code
 
 if __name__=='__main__':
+  db_begin(r'c:\temp\data')
   fetch('H2O',1,1,3400,4100)
+  tableList()
+  describeTable('H2O')
