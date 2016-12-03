@@ -2229,7 +2229,7 @@ def extractColumns(TableName,SourceParameterName,ParameterFormats,ParameterNames
         #print 'par_format: '+par_format
         (lng,trail,lngpnt,ty) = re.search(regex,par_format).groups()
         ty = ty.lower()
-    if ty == 'd':
+        if ty == 'd':
            par_type = int
            if FixCol:
               format_regex_part = REGEX_INTEGER_FIXCOL(lng)
@@ -2339,7 +2339,7 @@ def queryHITRAN(TableName,iso_id_list,numin,numax):
     #print('url=',url)  # DEBUG
     # More efficient way: download by chunks
     try:
-        req = urllib2.urlopen(url)
+        req = urllib.request.urlopen(url)
     except HTTPError:
         raise Exception('Failed to retrieve data for given parameters.')
     except URLError:
@@ -2347,7 +2347,7 @@ def queryHITRAN(TableName,iso_id_list,numin,numax):
     #CHUNK = 16 * 1024 # default value
     CHUNK = 64 * 1024
     print ('BEGIN DOWNLOAD: '+TableName)
-    with open(DataFileName,'w') as fp:
+    with open(DataFileName,'wb') as fp:
        while True:
           chunk = req.read(CHUNK)
           if not chunk: break
@@ -11012,3 +11012,8 @@ def convolveSpectrumFull(Omega,CrossSection,Resolution=0.1,AF_wing=10.,SlitFunct
     return Omega,CrossSectionLowRes,None,None
 
 # ------------------------------------------------------------------
+
+# Test code
+
+if __name__=='__main__':
+  fetch('H2O',1,1,3400,4100)
