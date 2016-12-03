@@ -10356,7 +10356,7 @@ def absorptionCoefficient_Lorentz(Components=None,SourceTables=None,partitionFun
     """
 
     # warn user about too large omega step
-    if OmegaStep>0.1: warn('Too small omega step: possible accuracy decline')
+    if OmegaStep is not None and OmegaStep>0.1: warn('Too small omega step: possible accuracy decline')
 
     # "bug" with 1-element list
     Components = listOfTuples(Components)
