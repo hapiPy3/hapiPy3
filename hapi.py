@@ -11016,7 +11016,15 @@ def convolveSpectrumFull(Omega,CrossSection,Resolution=0.1,AF_wing=10.,SlitFunct
 # Test code
 
 if __name__=='__main__':
-  db_begin(r'c:\temp\data')
+  from pylab import plot
+  import tempfile
+  db_begin(os.path.join(tempfile.gettempdir(),'hapi'))
   fetch('H2O',1,1,3400,4100)
   tableList()
   describeTable('H2O')
+  fetch('CO2',2,1,2000,2100)
+  tableList()
+  describeTable('CO2')
+  nu,coef = absorptionCoefficient_Lorentz(SourceTables='CO2')
+
+  plot(nu,coef) 
