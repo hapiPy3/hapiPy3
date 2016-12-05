@@ -11017,6 +11017,7 @@ def convolveSpectrumFull(Omega,CrossSection,Resolution=0.1,AF_wing=10.,SlitFunct
 
 if __name__=='__main__':
   import matplotlib.pyplot as plt, tempfile
+  
   db_begin(os.path.join(tempfile.gettempdir(),'hapi'))
   fetch('H2O',1,1,3400,4100)
   tableList()
@@ -11025,5 +11026,15 @@ if __name__=='__main__':
   tableList()
   describeTable('CO2')
   nu,coef = absorptionCoefficient_Lorentz(SourceTables='CO2')
-
+  
+  font = {'family': 'serif',
+          'color':  'darkred',
+          'weight': 'normal',
+          'size': 16,
+          }
+  plt.figure(figsize=(10,6))
   plt.plot(nu,coef) 
+  plt.xlabel('$cm^{-1}$', fontdict=font)
+  plt.ylabel('$cm^2/molecule$', fontdict=font)
+  plt.title('Absorption coefficient for ${^{12}}C {^{16}}O_2$ : T=296K, p=1atm', fontdict=font)
+  plt.show()
